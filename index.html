@@ -143,25 +143,22 @@ h1.hero-title { font-size: clamp(2.2rem, 5vw, 3.5rem); color: #1e2a44; line-heig
 .collapse-head .sec-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
 .collapse-head .big-arrow { font-size: 1.5rem; color: var(--sage); transition: transform 0.3s; flex-shrink: 0; font-family: 'Noto Sans TC', sans-serif; }
 .collapse-head.open .big-arrow { transform: rotate(180deg); }
-/* 「點我展開」提示標籤:加在標題列，不隨箭頭旋轉 */
-.collapse-head .sec-title::after,
-.collapse-head h2::after {
-  content: "點我展開";
-  font-size: 0.68rem;
+/* 「點我展開」提示:獨立一列放在每個章節標題正上方，乾淨、不被線蓋住、不旋轉 */
+.collapse-head::before {
+  content: "▾ 點我展開這一章";
+  display: inline-block;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #fff;
   background: var(--clay, #c98a6b);
-  padding: 3px 9px;
-  border-radius: 11px;
-  margin-left: 10px;
-  vertical-align: middle;
-  letter-spacing: 0.03em;
+  padding: 3px 11px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
   white-space: nowrap;
-  display: inline-block;
 }
-.collapse-head.open .sec-title::after,
-.collapse-head.open h2::after {
-  content: "已展開｜點我收合";
+.collapse-head.open::before {
+  content: "▴ 已展開，點此收合";
   background: var(--sage, #9aa5b1);
 }
 .collapse-teaser { font-size: 1rem; color: var(--text); max-width: 640px; margin-bottom: 0; line-height: 1.8; }
