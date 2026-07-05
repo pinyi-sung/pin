@@ -143,6 +143,27 @@ h1.hero-title { font-size: clamp(2.2rem, 5vw, 3.5rem); color: #1e2a44; line-heig
 .collapse-head .sec-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
 .collapse-head .big-arrow { font-size: 1.5rem; color: var(--sage); transition: transform 0.3s; flex-shrink: 0; font-family: 'Noto Sans TC', sans-serif; }
 .collapse-head.open .big-arrow { transform: rotate(180deg); }
+/* 「點我展開」提示標籤:加在標題列，不隨箭頭旋轉 */
+.collapse-head .sec-title::after,
+.collapse-head h2::after {
+  content: "點我展開";
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--clay, #c98a6b);
+  padding: 3px 9px;
+  border-radius: 11px;
+  margin-left: 10px;
+  vertical-align: middle;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  display: inline-block;
+}
+.collapse-head.open .sec-title::after,
+.collapse-head.open h2::after {
+  content: "已展開｜點我收合";
+  background: var(--sage, #9aa5b1);
+}
 .collapse-teaser { font-size: 1rem; color: var(--text); max-width: 640px; margin-bottom: 0; line-height: 1.8; }
 .collapse-body { display: none; margin-top: 2.5rem; }
 .collapse-body.show { display: block; }
@@ -384,6 +405,18 @@ footer { background: linear-gradient(180deg, #e6ecf8 0%, #dde4f4 100%); padding:
 </header>
 
 <!-- HERO -->
+<!-- 展開提示橫幅 -->
+<div style="max-width:920px; margin:12px auto 0; padding:0 16px;">
+  <div style="background:linear-gradient(135deg,#fff4ef 0%,#fdf0f5 100%); border:2px solid var(--clay,#c98a6b); border-radius:10px; padding:0.9rem 1.1rem; display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap; box-shadow:0 2px 10px rgba(180,140,120,0.15);">
+    <span style="font-size:1.5rem; line-height:1;">👆</span>
+    <div style="flex:1 1 260px; min-width:200px;">
+      <div style="font-weight:700; color:var(--clay,#c98a6b); font-size:1rem; margin-bottom:2px;">本網頁多數章節可以「點開」閱讀</div>
+      <div style="font-size:0.9rem; color:#4a5578; line-height:1.6;">每一章的標題（有 <span style="color:var(--clay,#c98a6b); font-weight:700;">▾</span> 符號者）都可以點擊展開，看到完整內容。建議先按右邊的「全部展開」，就能一次看到所有資料。</div>
+    </div>
+    <button id="expandAllBtn" onclick="expandAllSections()" style="flex:0 0 auto; background:var(--clay,#c98a6b); color:#fff; border:none; border-radius:20px; padding:0.55rem 1.2rem; font-size:0.92rem; font-weight:700; cursor:pointer; box-shadow:0 2px 6px rgba(180,140,120,0.3); transition:opacity .2s;">全部展開 ▾</button>
+  </div>
+</div>
+
 <section class="hero">
   <div class="hero-inner">
     <div class="kicker">A Gentle Understanding</div>
@@ -2392,6 +2425,24 @@ function toggleSection(btn) {
     btn.classList.add('open');
     body.classList.add('show');
   }
+}
+function expandAllSections() {
+  var heads = document.querySelectorAll('.collapse-head');
+  var btn = document.getElementById('expandAllBtn');
+  // 判斷目前是否已全部展開
+  var allOpen = true;
+  heads.forEach(function(h){ if(!h.classList.contains('open')) allOpen=false; });
+  heads.forEach(function(h){
+    var body = h.nextElementSibling;
+    if(allOpen){
+      h.classList.remove('open');
+      if(body) body.classList.remove('show');
+    } else {
+      h.classList.add('open');
+      if(body) body.classList.add('show');
+    }
+  });
+  if(btn){ btn.innerHTML = allOpen ? '全部展開 ▾' : '全部收合 ▴'; }
 }
 function toggleAcc(btn) {
   const content = btn.nextElementSibling;
